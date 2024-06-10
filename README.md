@@ -84,7 +84,7 @@ ORDER BY price DESC-- descendant order so to find the most expensive item.
 -- I count all [COUNT(*)] dishes  from (FROM) the menu_items and I file them under a new column (AS "").  
 -- I then group the results by category (GROUP BY).
 
-``sql 
+```sql 
 SELECT category, COUNT(*) AS NumDish 
 FROM menu_items
 GROUP BY category 
@@ -97,7 +97,7 @@ Better understand the orders table by finding the date range, the number of item
 
 -- **View the order_details table.**
 
-``sql
+```sql
 SELECT *
 FROM order_details;
 ```
@@ -106,7 +106,7 @@ FROM order_details;
 
 I select (SELECT) all the items from (FROM) the order_details table and I order them (ORDER BY) by order_date and find the date range. 
 
-``sql
+```sql
 SELECT *
 FROM order_details
 ORDER BY order_date;
@@ -127,7 +127,7 @@ FROM order_details; -- 2023-03-31
 -- We need to count the orders made within that date range
 -- I select (SELECT) all unique orders from the order_details table (FROM) and count [COUNT(DISTINCT)] the number of orders in the order_id column. 
 
-``sql
+```sql
 SELECT COUNT(DISTINCT order_id) as number_orders 
 FROM order_details 
 ;
@@ -139,14 +139,53 @@ FROM order_details
 -- I select (SELECT) all orders from the order_details table (FROM) and count all the orders (COUNT).
 -- We know already that the range is included in the column order_date. 
 
-``sql
+```sql
 SELECT COUNT(*) 
 FROM order_details
 ```
 
 -- 12234
 
+-- **Which orders had the most number of items?**
+-- I select the orders (SELECT) in the order_id column in the order_details table (FROM) and count the items (COUNT) in a new column (AS num_items)
+-- I then group them (GROUP BY) by their order_id and order the latter (ORDER BY) by the number of items ordered for each order. 
+
+```sql
+SELECT order_id, COUNT(item_id) AS num_items
+FROM order_details
+GROUP BY order_id
+ORDER BY num_items DESC -- the order with most number of 
+;
+```
+
+-- **How many orders had more than 12 items? **
+
+-- This question involves writing a subquery. 
+
+-- First query:
+-- I select and count [SELECT COUNT(*)] all the orders in the order_id column in the order_details table (FROM).
+-- I then group them (GROUP BY) by their order_id but only the ones with more than 12 items per order (HAVING .... > 12).
+
+-- I then use this query to formulate a different one: 
+-- I select the query I just wrote and treat it as a table [SELECT COUNT(*)]
+-- and count all the orders that have more than 12 items 
+
+```sql
+
+SELECT COUNT(*)
+FROM 
+(SELECT order_id, COUNT(item_id)
+FROM order_details
+GROUP BY order_id
+HAVING num_items > 12) AS num_orders -- tutti gli ordini con piu' di 12 items
+;
+```
+--- result: 20
+
 
 ### Objective 3 - Analyze customer behavior
 
 Combine the items and orders tables, find the least and most ordered categories, and dive into the details of the highest spend orders.
+
+
+
