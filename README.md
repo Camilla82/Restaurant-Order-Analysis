@@ -10,7 +10,7 @@ Please refer to the Maven Analytics page for the project video.
 
 ## Dataset 
 
-**Restaurant orders ** <https://maven-datasets.s3.amazonaws.com/Restaurant+Orders/Restaurant+Orders+MySQL.zip> 
+**Restaurant orders** <https://maven-datasets.s3.amazonaws.com/Restaurant+Orders/Restaurant+Orders+MySQL.zip> 
 A quarter's worth of orders from a fictitious international cuisine restaurant.
 
 ## Useful tools
