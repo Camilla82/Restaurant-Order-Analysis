@@ -39,34 +39,44 @@ FROM menu_items
 -- **What are the least and most expensive items on the menu?**
 -- I select (SELECT) all the items from (FROM) the menu_items table and I order (ORDER BY) them from least to most expensive(DESC)/least expensive(ASC). 
 
+``` sql
 SELECT *
 FROM menu_items
 ORDER BY price DESC
-; 
+;
+```
 -- most expensive = "Shrimp Scampi"
 
+```sql
 SELECT *
 FROM menu_items
 ORDER BY price ASC
-; 
+;
+```
+
 -- least expensive = "Edamame"
 
 -- **How many Italian dishes are on the menu? What are the least and most expensive Italian dishes on the menu?**
 -- I select (SELECT) all the items from (FROM) the menu_items table but only the one under the Italian category (WHERE). I then order (ORDER BY) them 
 -- by price to find the least expensive (ASC)/most expensive(DESC) item . 
 
+``sql 
 SELECT *
 FROM menu_items
 WHERE category = 'Italian'  
 ORDER BY price ASC 
 ; 
+```
+
 -- least expensive = "Fettuccine Alfredo" and "Spaghetti" (same price). 
 
+```sql
 SELECT *
 FROM menu_items
 WHERE category = 'Italian'
 ORDER BY price DESC-- descendant order so to find the most expensive item. 
 ; -- most expensive = "Shrimp Scampi"
+```
 
 -- We could add LIMIT 1 in both scripts to limit the number of results, but in this case we wouldn't find out that two items shared the same price. 
 
@@ -74,10 +84,12 @@ ORDER BY price DESC-- descendant order so to find the most expensive item.
 -- I count all [COUNT(*)] dishes  from (FROM) the menu_items and I file them under a new column (AS "").  
 -- I then group the results by category (GROUP BY).
 
+``sql 
 SELECT category, COUNT(*) AS NumDish 
 FROM menu_items
 GROUP BY category 
 ;
+```
 
 ### OBJECTIVE 2 - Explore the orders table
 
@@ -85,36 +97,54 @@ Better understand the orders table by finding the date range, the number of item
 
 -- **View the order_details table.**
 
+``sql
 SELECT *
 FROM order_details;
+```
 
 -- **What is the date range of the table?**
 
+I select (SELECT) all the items from (FROM) the order_details table and I order them (ORDER BY) by order_date and find the date range. 
+
+``sql
 SELECT *
 FROM order_details
 ORDER BY order_date;
+```
 
 -- range JANUARY-MARCH 2023 -- 
--- We can also isolate the range extremes by using SELECT MIN and MAX
+-- We can also isolate the range extremes by using SELECT MIN and MAX.
 
+```sql 
 SELECT MIN(order_date) AS order_min
 FROM order_details; -- 2023-01-01
 
 SELECT MAX(order_date) AS order_max 
 FROM order_details; -- 2023-03-31
+```
 
 -- **How many orders were made within this date range?**  
--- We need to count the orders made within that date range : we simply count the number of orders in the order_id column. 
+-- We need to count the orders made within that date range
+-- I select (SELECT) all unique orders from the order_details table (FROM) and count [COUNT(DISTINCT)] the number of orders in the order_id column. 
 
-SELECT COUNT(DISTINCT order_id) as number_orders -- we use DISTINCT to remove duplicate orders. 
-FROM order_details -- 
-	;
+``sql
+SELECT COUNT(DISTINCT order_id) as number_orders 
+FROM order_details 
+;
+```
  
 -- Result: 5370
 
+-- **How many items were ordered within this date range?**
+-- I select (SELECT) all orders from the order_details table (FROM) and count all the orders (COUNT).
+-- We know already that the range is included in the column order_date. 
 
+``sql
+SELECT COUNT(*) 
+FROM order_details
+```
 
-
+-- 12234
 
 
 ### Objective 3 - Analyze customer behavior
