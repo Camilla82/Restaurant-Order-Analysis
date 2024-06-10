@@ -307,7 +307,7 @@ WHERE order_id = 440
 -- I want to know how much from each category order 440 ordered. 
 -- I group the orders (GROUP BY) by the category and I then count them (COUNT) in a different column (num_items).
 
-``sql
+```sql
 SELECT category, COUNT(item_id) AS num_items
 FROM order_details od LEFT JOIN menu_items mi 
     ON od.item_id = mi.menu_item_id 
@@ -315,5 +315,6 @@ WHERE order_id = 440
 GROUP BY category 
 ;
 ```
+
 -- Interestingly enough, this order was made up of mostly Italian items, even though the most ordered items in general were from the American category. 
 
