@@ -28,6 +28,7 @@ A quarter's worth of orders from a fictitious international cuisine restaurant.
 Better understand the items table by finding the number of rows in the table, the least and most expensive items, and the item prices within each category.
 
 -- **Explore the items table**
+
 -- I select (SELECT) all the items from (FROM) the menu_items table to inspect the table's structure. 
 
 ``` sql
@@ -37,6 +38,7 @@ FROM menu_items
 ```
 
 -- **What are the least and most expensive items on the menu?**
+
 -- I select (SELECT) all the items from (FROM) the menu_items table and I order (ORDER BY) them from least to most expensive(DESC)/least expensive(ASC). 
 
 ``` sql
@@ -45,6 +47,7 @@ FROM menu_items
 ORDER BY price DESC
 ;
 ```
+
 -- most expensive = "Shrimp Scampi"
 
 ```sql
@@ -57,6 +60,7 @@ ORDER BY price ASC
 -- least expensive = "Edamame"
 
 -- **How many Italian dishes are on the menu? What are the least and most expensive Italian dishes on the menu?**
+
 -- I select (SELECT) all the items from (FROM) the menu_items table but only the one under the Italian category (WHERE). I then order (ORDER BY) them 
 -- by price to find the least expensive (ASC)/most expensive(DESC) item . 
 
@@ -70,17 +74,21 @@ ORDER BY price ASC
 
 -- least expensive = "Fettuccine Alfredo" and "Spaghetti" (same price). 
 
+
 ```sql
 SELECT *
 FROM menu_items
 WHERE category = 'Italian'
 ORDER BY price DESC-- descendant order so to find the most expensive item. 
-; -- most expensive = "Shrimp Scampi"
+; 
 ```
+
+-- most expensive = "Shrimp Scampi"
 
 -- We could add LIMIT 1 in both scripts to limit the number of results, but in this case we wouldn't find out that two items shared the same price. 
 
 -- **How many dishes are in each category? What is the average dish price within each category?**
+
 -- I count all [COUNT(*)] dishes  from (FROM) the menu_items and I file them under a new column (AS "").  
 -- I then group the results by category (GROUP BY).
 
@@ -113,6 +121,7 @@ ORDER BY order_date;
 ```
 
 -- range JANUARY-MARCH 2023 -- 
+
 -- We can also isolate the range extremes by using SELECT MIN and MAX.
 
 ```sql 
@@ -124,7 +133,9 @@ FROM order_details; -- 2023-03-31
 ```
 
 -- **How many orders were made within this date range?**  
+
 -- We need to count the orders made within that date range
+
 -- I select (SELECT) all unique orders from the order_details table (FROM) and count [COUNT(DISTINCT)] the number of orders in the order_id column. 
 
 ```sql
@@ -136,6 +147,7 @@ FROM order_details
 -- Result: 5370
 
 -- **How many items were ordered within this date range?**
+
 -- I select (SELECT) all orders from the order_details table (FROM) and count all the orders (COUNT).
 -- We know already that the range is included in the column order_date. 
 
@@ -147,6 +159,7 @@ FROM order_details
 -- 12234
 
 -- **Which orders had the most number of items?**
+
 -- I select the orders (SELECT) in the order_id column in the order_details table (FROM) and count the items (COUNT) in a new column (AS num_items)
 -- I then group them (GROUP BY) by their order_id and order the latter (ORDER BY) by the number of items ordered for each order. 
 
@@ -158,7 +171,7 @@ ORDER BY num_items DESC -- the order with most number of
 ;
 ```
 
--- **How many orders had more than 12 items? **
+-- **How many orders had more than 12 items?**
 
 -- This question involves writing a subquery. 
 
@@ -171,7 +184,6 @@ ORDER BY num_items DESC -- the order with most number of
 -- and count all the orders that have more than 12 items 
 
 ```sql
-
 SELECT COUNT(*)
 FROM 
 (SELECT order_id, COUNT(item_id)
@@ -180,6 +192,7 @@ GROUP BY order_id
 HAVING num_items > 12) AS num_orders -- tutti gli ordini con piu' di 12 items
 ;
 ```
+
 --- result: 20
 
 
