@@ -64,7 +64,7 @@ ORDER BY price ASC
 -- I select (SELECT) all the items from (FROM) the menu_items table but only the one under the Italian category (WHERE). I then order (ORDER BY) them 
 -- by price to find the least expensive (ASC)/most expensive(DESC) item . 
 
-``sql 
+```sql 
 SELECT *
 FROM menu_items
 WHERE category = 'Italian'  
