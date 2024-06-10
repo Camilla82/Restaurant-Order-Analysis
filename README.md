@@ -30,9 +30,11 @@ Better understand the items table by finding the number of rows in the table, th
 -- **Explore the items table**
 -- I select (SELECT) all the items from (FROM) the menu_items table to inspect the table's structure. 
 
+``` sql
 SELECT * 
 FROM menu_items
 ;
+```
 
 -- **What are the least and most expensive items on the menu?**
 -- I select (SELECT) all the items from (FROM) the menu_items table and I order (ORDER BY) them from least to most expensive(DESC)/least expensive(ASC). 
