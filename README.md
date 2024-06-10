@@ -196,9 +196,124 @@ HAVING num_items > 12) AS num_orders -- tutti gli ordini con piu' di 12 items
 --- result: 20
 
 
-### Objective 3 - Analyze customer behavior
+### Objective 3 - Analyse customer behavior
 
 Combine the items and orders tables, find the least and most ordered categories, and dive into the details of the highest spend orders.
 
+-- **Combine the menu_items and order_details tables into a single table**
 
+-- To join the two tables I need to use JOIN by the two columns that these table have in common. 
+-- In our case is item_id from the order_details table and the menu_item_id from the menu_items table. 
+-- I will use LEFT JOIN.
+-- I will select (SELECT) all entries from (FROM) the order_details table and join them to create a new table. 
+-- I also give some aliases (order_details od; menu_items mi). 
+
+``` sql
+SELECT *
+FROM order_details od LEFT JOIN menu_items mi -- you would first mention the table where the transactions are mentions, in this case the order_details. We also give aliases
+    ON od.item_id = mi.menu_item_id -- elements that have in common (where to join)
+;
+```
+
+-- **What were the least and most ordered items? What categories were they in?**
+
+Using the previous query, I need to find out how many times an item has been ordered.
+I  group my items by their name (GROUP BY) and then count how many orders have been made (COUNT).
+
+
+``` sql
+SELECT item_name, COUNT(order_details_id) AS num_purchases
+FROM order_details od LEFT JOIN menu_items mi -- you would first mention the table where the transactions are mentions, in this case the order_details. We also give aliases
+    ON od.item_id = mi.menu_item_id -- elements that have in common (where to join)
+    GROUP BY item_name 
+;
+```
+-- Finally, order them by number of purchases (ORDER BY) to find the most (DESC) and the least (ASC) purchased item.
+
+```sql
+SELECT item_name, COUNT(order_details_id) AS num_purchases 
+FROM order_details od LEFT JOIN menu_items mi -- you would first mention the table where the transactions are mentions, in this case the order_details. We also give aliases
+    ON od.item_id = mi.menu_item_id -- elements that have in common (where to join)
+    GROUP BY item_name 
+    ORDER BY num_purchases DESC
+
+SELECT item_name, COUNT(order_details_id) AS num_purchases 
+FROM order_details od LEFT JOIN menu_items mi -- you would first mention the table where the transactions are mentions, in this case the order_details. We also give aliases
+    ON od.item_id = mi.menu_item_id -- elements that have in common (where to join)
+    GROUP BY item_name 
+    ORDER BY num_purchases ASC
+;
+;
+```
+
+-- Most purchased: Hamburger
+-- Least purchased: Chicken Tacos
+
+-- To find out in what category the order items are, I will add category in the GROUP BY and SELECT statements.
+
+```sql
+SELECT item_name, category, COUNT(order_details_id) AS num_purchases 
+FROM order_details od LEFT JOIN menu_items mi -- you would first mention the table where the transactions are mentions, in this case the order_details. We also give aliases
+    ON od.item_id = mi.menu_item_id -- elements that have in common (where to join)
+    GROUP BY item_name, category
+    ORDER BY num_purchases ASC
+;
+```
+
+-- **What were the top 5 orders that spent the most money?**
+I need first to group the entries by orders (you might more than one entry x order) by adding GROUP by order_id. 
+
+``` sql
+SELECT order_id, SUM(price) AS total_spend
+FROM order_details od LEFT JOIN menu_items mi 
+    ON od.item_id = mi.menu_item_id 
+    GROUP BY order_id 
+;
+
+```
+
+-- Then, I can order the results (ORDER BY) by the most (DESC) or least (ASC) total money spend and limit it to 5 entries (LIMIT 5). 
+
+```sql
+SELECT order_id, SUM(price) AS total_spend
+FROM order_details od LEFT JOIN menu_items mi 
+    ON od.item_id = mi.menu_item_id 
+    GROUP BY order_id 
+    ORDER BY total_spend DESC
+    LIMIT 5
+;
+
+SELECT order_id, SUM(price) AS total_spend
+FROM order_details od LEFT JOIN menu_items mi 
+    ON od.item_id = mi.menu_item_id 
+    GROUP BY order_id 
+    ORDER BY total_spend ASC
+     LIMIT 5
+;
+```
+
+-- **View the details of the highest spend order. Which specific items were purchased?**
+
+--  The highest spend order has an id of 440, so I can take my previous query where I build the join table and query it only for order 440 (WHERE =).
+
+``` sql
+SELECT *
+FROM order_details od LEFT JOIN menu_items mi 
+    ON od.item_id = mi.menu_item_id 
+WHERE order_id = 440
+;
+```
+
+-- I want to know how much from each category order 440 ordered. 
+-- I group the orders (GROUP BY) by the category and I then count them (COUNT) in a different column (num_items).
+
+``sql
+SELECT category, COUNT(item_id) AS num_items
+FROM order_details od LEFT JOIN menu_items mi 
+    ON od.item_id = mi.menu_item_id 
+WHERE order_id = 440
+GROUP BY category 
+;
+```
+-- Interestingly enough, this order was made up of mostly Italian items, even though the most ordered items in general were from the American category. 
 
